@@ -147,7 +147,7 @@ const handleSubmit = async () => {
     console.log('Login attempt with:', email.value, password.value)
 
     // Redirect to dashboard or home page after successful login
-    router.push('/dashboard')
+    router.push('/home')
   } catch (err) {
     error.value = 'Login gagal. Periksa kembali email dan kata sandi.'
   } finally {

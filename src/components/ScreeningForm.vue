@@ -1,132 +1,93 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-md">
+  <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
     <!-- Progress Bar -->
-    <div class="mb-6">
-      <div class="w-full bg-gray-200 rounded-full h-2">
+    <div class="mb-8">
+      <div class="w-full bg-gray-200 rounded-full h-3">
         <div
-          class="bg-teal-500 h-2 rounded-full transition-all duration-300"
+          class="bg-teal-600 h-3 rounded-full transition-all duration-500"
           :style="{ width: `${(currentStep / questions.length) * 100}%` }"
         ></div>
       </div>
-      <p class="text-sm text-gray-600 mt-2">
+      <p class="text-sm text-gray-700 mt-3 font-medium">
         Pertanyaan {{ currentStep + 1 }} dari {{ questions.length }}
       </p>
     </div>
     <!-- Question -->
-    <div v-if="currentStep < questions.length">
-      <h3 class="text-lg font-medium text-gray-800 mb-4">{{ questions[currentStep].text }}</h3>
+    <div v-if="currentStep < questions.length" class="animate-fade-in">
+      <h3 class="text-xl font-semibold text-gray-900 mb-6">{{ questions[currentStep].text }}</h3>
       <div class="space-y-4">
         <label
-          v-for="option in questions[currentStep].options"
+          v-for="option in options"
           :key="option.value"
-          class="flex items-center space-x-2 cursor-pointer"
+          class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-teal-50 transition-all duration-200"
         >
           <input
             type="radio"
             v-model="answers[currentStep]"
             :value="option.value"
-            class="text-teal-500 focus:ring-teal-400"
+            class="w-5 h-5 text-teal-600 focus:ring-teal-500 border-gray-300"
           />
-          <span class="text-gray-700">{{ option.label }}</span>
+          <span class="text-gray-700 text-lg">{{ option.text }}</span>
         </label>
       </div>
     </div>
-    <!-- Results -->
-    <div v-else>
-      <h3 class="text-lg font-medium text-gray-800 mb-4">Hasil Skrining</h3>
-      <p class="text-gray-600 mb-4">Berdasarkan jawaban Anda, berikut adalah ringkasan:</p>
-      <p class="text-gray-700 font-medium">Skor Total: {{ totalScore }} / {{ maxScore }}</p>
-      <p class="text-gray-600 mt-2">
-        {{ resultMessage }}
-      </p>
-      <router-link
-        to="/hotlines"
-        class="inline-block mt-4 text-teal-500 hover:text-teal-700 font-medium"
-      >
-        Hubungi Hotline untuk Dukungan
-      </router-link>
-    </div>
     <!-- Navigation Buttons -->
-    <div v-if="currentStep < questions.length" class="mt-6 flex justify-between">
+    <div v-if="currentStep < questions.length" class="mt-8 flex justify-between">
       <button
         @click="previousStep"
         :disabled="currentStep === 0"
-        class="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50"
+        class="px-6 py-3 text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 disabled:opacity-50 transition-all duration-200 font-semibold"
       >
         Sebelumnya
       </button>
       <button
         @click="nextStep"
-        :disabled="!answers[currentStep]"
-        class="px-4 py-2 text-white bg-teal-500 rounded-lg hover:bg-teal-600 disabled:opacity-50"
+        :disabled="answers[currentStep] === undefined"
+        class="px-6 py-3 text-white bg-teal-600 rounded-xl hover:bg-teal-700 disabled:opacity-50 transition-all duration-200 font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-1"
       >
         {{ currentStep === questions.length - 1 ? 'Selesai' : 'Berikutnya' }}
-      </button>
-    </div>
-    <div v-else class="mt-6">
-      <button
-        @click="resetForm"
-        class="w-full px-4 py-2 text-white bg-teal-500 rounded-lg hover:bg-teal-600"
-      >
-        Ulangi Skrining
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import DASS21Id from '../data/DASS21Id.json'
 
-const questions = ref([
-  {
-    text: 'Seberapa sering Anda merasa cemas atau khawatir dalam seminggu terakhir?',
-    options: [
-      { label: 'Tidak pernah', value: 0 },
-      { label: 'Jarang', value: 1 },
-      { label: 'Kadang-kadang', value: 2 },
-      { label: 'Sering', value: 3 },
-    ],
-  },
-  {
-    text: 'Apakah Anda merasa sulit untuk tidur atau tetap tidur?',
-    options: [
-      { label: 'Tidak pernah', value: 0 },
-      { label: 'Jarang', value: 1 },
-      { label: 'Kadang-kadang', value: 2 },
-      { label: 'Sering', value: 3 },
-    ],
-  },
-  {
-    text: 'Seberapa sering Anda merasa kehilangan minat pada aktivitas sehari-hari?',
-    options: [
-      { label: 'Tidak pernah', value: 0 },
-      { label: 'Jarang', value: 1 },
-      { label: 'Kadang-kadang', value: 2 },
-      { label: 'Sering', value: 3 },
-    ],
-  },
-])
-
+const questions = ref(DASS21Id.quizPage.questions)
+const options = ref(DASS21Id.quizPage.options)
 const currentStep = ref(0)
 const answers = ref([])
-
-const totalScore = computed(() => answers.value.reduce((sum, answer) => sum + (answer || 0), 0))
-const maxScore = computed(() => questions.value.length * 3)
-
-const resultMessage = computed(() => {
-  if (totalScore.value <= 3) {
-    return 'Anda tampaknya dalam kondisi baik. Tetap jaga kesehatan mental Anda!'
-  } else if (totalScore.value <= 6) {
-    return 'Anda mungkin mengalami sedikit stres. Pertimbangkan untuk berbicara dengan seseorang.'
-  } else {
-    return 'Kami sarankan untuk menghubungi profesional atau hotline untuk dukungan lebih lanjut.'
-  }
-})
+const router = useRouter()
 
 const nextStep = () => {
   if (answers.value[currentStep.value] !== undefined) {
-    currentStep.value++
+    if (currentStep.value < questions.value.length - 1) {
+      currentStep.value++
+    } else {
+      // Calculate scores and redirect to Result page
+      const scores = {
+        depression: 0,
+        anxiety: 0,
+        stress: 0,
+      }
+      questions.value.forEach((question, index) => {
+        if (answers.value[index] !== undefined) {
+          scores[question.type] += answers.value[index]
+        }
+      })
+      // Multiply by 2 for DASS-21 scoring
+      scores.depression *= 2
+      scores.anxiety *= 2
+      scores.stress *= 2
+      router.push({
+        path: '/result',
+        query: { scores: JSON.stringify(scores) },
+      })
+    }
   }
 }
 
@@ -135,9 +96,33 @@ const previousStep = () => {
     currentStep.value--
   }
 }
-
-const resetForm = () => {
-  currentStep.value = 0
-  answers.value = []
-}
 </script>
+
+<style scoped>
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .text-xl {
+    font-size: 1.125rem;
+  }
+  .text-lg {
+    font-size: 1rem;
+  }
+  .p-8 {
+    padding: 1.5rem;
+  }
+}
+</style>

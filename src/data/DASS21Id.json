@@ -1,0 +1,155 @@
+{
+  "rulesPage": {
+    "back": "Kembali",
+    "title": "Aturan",
+    "rules": [
+      "Harap baca pertanyaan dan pilih jawaban yang paling sesuai dengan kondisi Anda selama MINGGU TERAKHIR",
+      "Tidak ada jawaban benar atau salah, jadi jangan khawatir",
+      "JANGAN terlalu lama menjawab setiap pertanyaan"
+    ],
+    "button": "Mulai"
+  },
+  "quizPage": {
+    "questions": [
+      { "text": "Saya merasa sulit untuk menenangkan diri", "type": "stress" },
+      { "text": "Saya merasakan mulut saya kering", "type": "anxiety" },
+      { "text": "Saya sama sekali tidak bisa merasakan perasaan positif", "type": "depression" },
+      {
+        "text": "Saya mengalami kesulitan bernapas (misalnya napas sangat cepat, sesak napas tanpa aktivitas fisik)",
+        "type": "anxiety"
+      },
+      { "text": "Saya merasa sulit untuk memulai melakukan sesuatu", "type": "depression" },
+      { "text": "Saya cenderung bereaksi berlebihan terhadap situasi", "type": "stress" },
+      { "text": "Saya mengalami gemetar (misalnya di tangan)", "type": "anxiety" },
+      { "text": "Saya merasa menghabiskan banyak energi saraf", "type": "stress" },
+      {
+        "text": "Saya khawatir tentang situasi di mana saya mungkin panik dan mempermalukan diri sendiri",
+        "type": "anxiety"
+      },
+      { "text": "Saya merasa tidak memiliki harapan untuk masa depan", "type": "depression" },
+      { "text": "Saya merasa mudah tersinggung", "type": "stress" },
+      { "text": "Saya merasa sulit untuk rileks", "type": "stress" },
+      { "text": "Saya merasa sedih dan murung", "type": "depression" },
+      { "text": "Saya tidak sabar dengan hal-hal yang menghambat saya", "type": "stress" },
+      { "text": "Saya merasa hampir panik", "type": "anxiety" },
+      { "text": "Saya tidak bisa antusias terhadap apa pun", "type": "depression" },
+      { "text": "Saya merasa tidak berharga sebagai pribadi", "type": "depression" },
+      { "text": "Saya merasa sangat sensitif", "type": "stress" },
+      {
+        "text": "Saya merasakan detak jantung saya tanpa aktivitas fisik (misalnya detak jantung meningkat, jantungan)",
+        "type": "anxiety"
+      },
+      { "text": "Saya merasa takut tanpa alasan yang jelas", "type": "anxiety" },
+      { "text": "Saya merasa hidup ini tidak berarti", "type": "depression" }
+    ],
+    "options": [
+      { "text": "Tidak pernah", "value": 0 },
+      { "text": "Kadang-kadang", "value": 1 },
+      { "text": "Sering", "value": 2 },
+      { "text": "Hampir selalu", "value": 3 }
+    ],
+    "button": "Berikutnya"
+  },
+  "resultPage": {
+    "title": "Hasil",
+    "depressionLabel": "Depresi",
+    "anxietyLabel": "Kecemasan",
+    "stressLabel": "Stres",
+    "results": ["Normal", "Ringan", "Sedang", "Berat", "Sangat Berat"],
+    "resultTips": {
+      "depression": [
+        [
+          "Tingkat depresi Anda normal. Itu bagus! Tapi Anda harus menjaga kondisi ini.\n",
+          "Sebaiknya Anda mengambil langkah pencegahan agar tidak mengalami depresi.\n",
+          "Langkah seperti berolahraga secara teratur, menghindari orang toksik, dan cukup tidur.\n",
+          "Semoga sukses!"
+        ],
+        [
+          "Tingkat depresi Anda ringan. Itu sedikit di atas normal.\n",
+          "Tapi jangan khawatir, ini akan baik-baik saja. Pastikan untuk makan sehat dan menjaga berat badan ideal.\n",
+          "Pikiran sehat berasal dari tubuh sehat. Juga, perbanyak interaksi dengan teman dan jaga hubungan yang sehat."
+        ],
+        [
+          "Tingkat depresi Anda sedang. Untuk saat ini.\n",
+          "Disarankan untuk menghentikan aktivitas seperti berkomunikasi dengan orang yang salah,\n",
+          "mengonsumsi pola makan tidak seimbang, dan memikirkan hal negatif. Hentikan apa pun yang dapat\n",
+          "memperburuk depresi Anda. Juga, luangkan waktu untuk berbicara dengan diri sendiri."
+        ],
+        [
+          "Tingkat depresi Anda sudah berat. Ini tidak baik.\n",
+          "Upaya kecil untuk mengatasinya tidak akan berhasil. Sangat disarankan untuk berbicara dengan orang\n",
+          "yang Anda percaya seperti teman atau keluarga tentang masalah Anda, atau konsultasikan dengan profesional\n",
+          "medis seperti konselor atau terapis. Silakan lakukan jika Anda membutuhkan bantuan."
+        ],
+        [
+          "Tingkat depresi Anda sangat berat. Anda harus segera menghubungi profesional medis untuk bantuan.\n",
+          "Jika Anda memiliki pikiran untuk bunuh diri, harap hindari tindakan gegabah dan hubungi hotline bunuh diri lokal.\n",
+          "Ingat, Anda tidak sendiri."
+        ]
+      ],
+      "anxiety": [
+        [
+          "Tingkat kecemasan Anda normal. Itu baik karena kecemasan sesekali adalah hal yang wajar.\n",
+          "Kecemasan adalah pengalaman manusia yang normal. Jangan biarkan itu berlarut-larut.\n",
+          "Selama Anda mengambil langkah untuk mengendalikannya, Anda akan baik-baik saja. Semoga sukses!\n"
+        ],
+        [
+          "Tingkat kecemasan Anda ringan. Sedikit di atas rata-rata, tapi Anda akan baik-baik saja selama\n",
+          "Anda memastikan itu tidak lepas kendali. Tulis pikiran Anda dan berjalan-jalan dari waktu ke waktu.\n",
+          "Lakukan sesuatu yang bisa menenangkan Anda atau kunjungi tempat dengan suasana santai."
+        ],
+        [
+          "Tingkat kecemasan Anda sedang. Sangat disarankan untuk mulai mengambil tindakan pencegahan seperti\n",
+          "mencoba suplemen, mengubah pola makan, dan mempertanyakan pola pikir Anda. Kecemasan Anda\n",
+          "harus ditangani dengan baik untuk mencegahnya berkembang ke skala yang sulit dikelola."
+        ],
+        [
+          "Tingkat kecemasan Anda berat. Ini telah mencapai tahap yang dapat mengganggu aktivitas sehari-hari.\n",
+          "Anda harus fokus pada strategi yang lebih baik untuk mengatasi kecemasan, seperti mengenali dan\n",
+          "mengelola pemicu Anda serta mengadopsi terapi perilaku kognitif (CBT). Tentu saja, Anda bisa\n",
+          "selalu berkonsultasi dengan dokter tentang obat-obatan."
+        ],
+        [
+          "Tingkat kecemasan Anda sangat berat. Pada titik ini, kecemasan Anda bisa mulai berbahaya.\n",
+          "Terkadang kecemasan bisa menjadi serius dan berubah menjadi serangan kecemasan yang awalnya terasa terkendali\n",
+          "lalu meningkat dalam beberapa jam. Skenario terburuk, Anda bisa mengalami serangan kecemasan dan panik secara bersamaan.\n",
+          "Mengenali tanda-tandanya adalah satu hal, tetapi lebih baik Anda mencari bantuan dari profesional medis."
+        ]
+      ],
+      "stress": [
+        [
+          "Tingkat stres Anda normal. Stres adalah reaksi psikologis dan fisik yang normal\n",
+          "terhadap situasi positif atau negatif dalam hidup Anda, seperti pekerjaan baru atau kehilangan orang yang dicintai.\n",
+          "Pastikan saja itu tidak menjadi lebih dari yang bisa Anda tangani.\n",
+          "Lakukan itu dan Anda akan bisa mempertahankan tingkat stres normal untuk waktu yang lama.\n",
+          "Semoga sukses!"
+        ],
+        [
+          "Tingkat stres Anda ringan. Sedikit lebih tinggi dari normal tapi tidak cukup kuat untuk memengaruhi\n",
+          "kehidupan sehari-hari Anda. Stres sehari-hari adalah hal yang normal, tetapi kita semua perlu tahu kapan harus\n",
+          "menutup mata dan mengambil napas dalam-dalam saat merasa tegang. Ingat untuk menjaga diri dengan cukup tidur,\n",
+          "membatasi alkohol dan stimulan, serta memberi diri Anda waktu istirahat saat merasa stres."
+        ],
+        [
+          "Tingkat stres Anda sedang. Disarankan untuk mulai mengambil langkah untuk mengatasi stres seperti\n",
+          "menyeimbangkan waktu kerja dan rumah, meluangkan waktu untuk hobi, dan beristirahat saat benar-benar membutuhkannya.\n",
+          "Ini untuk memastikan bahwa stres Anda tidak mencapai tingkat yang bisa membahayakan Anda dan memengaruhi orang di sekitar.\n",
+          "Secara keseluruhan, rawat diri Anda dengan lebih baik. Anda tidak bisa mengurus hal lain jika tidak bisa merawat diri sendiri."
+        ],
+        [
+          "Tingkat stres Anda berat. Saatnya Anda mulai menganggap serius dan benar-benar berusaha untuk meredakan diri.\n",
+          "Terhubunglah dengan orang-orang yang mendukung yang bisa mendengarkan dan membantu Anda. Mungkin, jika ada kesempatan,\n",
+          "ambil libur dan jauhkan diri dari semua itu. Ingat untuk bersikap santai pada diri sendiri dan hal-hal di sekitar Anda.\n",
+          "Dengarkan musik untuk pelepasan stres tambahan dan konsultasikan ke dokter untuk pengobatan."
+        ],
+        [
+          "Tingkat stres Anda sangat berat. Anda mungkin mengalami sakit kepala dari waktu ke waktu dan penurunan\n",
+          "energi serta insomnia. Stres Anda telah mencapai tahap yang sekarang berbahaya bagi diri sendiri dan mungkin\n",
+          "memengaruhi orang lain juga. Sebaiknya Anda berhenti menggunakan tembakau dan stimulan jika Anda melakukannya\n",
+          "dan mencari bantuan dari profesional medis."
+        ]
+      ]
+    },
+    "returnButton": "Kembali"
+  }
+}

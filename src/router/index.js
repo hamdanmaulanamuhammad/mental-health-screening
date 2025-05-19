@@ -4,7 +4,10 @@ import Hotlines from '@/views/Hotlines.vue'
 import Login from '@/views/Login.vue'
 import Profile from '@/views/Profile.vue'
 import Register from '@/views/Register.vue'
+import Result from '@/views/Result.vue'
+import Rules from '@/views/Rules.vue'
 import Screening from '@/views/Screening.vue'
+import Support from '@/views/Support.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -16,7 +19,9 @@ const routes = [
   { path: '/hotlines', component: Hotlines },
   { path: '/screening', component: Screening },
   { path: '/profile', component: Profile },
-  // Catch-all for unmatched routes
+  { path: '/rules', component: Rules },
+  { path: '/result', component: Result },
+  { path: '/support', component: Support },
 ]
 
 const router = createRouter({

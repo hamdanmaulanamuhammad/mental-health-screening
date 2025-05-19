@@ -43,7 +43,7 @@
             >Hotlines</router-link
           >
           <router-link
-            to="/screening"
+            to="/rules"
             class="text-gray-600 hover:text-teal-500 transition duration-200"
             active-class="text-teal-500 font-medium"
             >Screening</router-link
