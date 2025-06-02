@@ -25,20 +25,32 @@
     <div v-if="!isEditing">
       <div class="space-y-5">
         <p class="flex items-center">
-          <span class="font-semibold text-gray-700 w-32">Nama Lengkap:</span>
-          <span class="text-gray-600">{{ user.fullName }}</span>
+          <span class="font-semibold text-gray-700 w-36">Nama Lengkap:</span>
+          <span class="text-gray-600">{{ user.name }}</span>
         </p>
         <p class="flex items-center">
-          <span class="font-semibold text-gray-700 w-32">Email:</span>
+          <span class="font-semibold text-gray-700 w-36">Email:</span>
           <span class="text-gray-600">{{ user.email }}</span>
         </p>
         <p class="flex items-center">
-          <span class="font-semibold text-gray-700 w-32">Umur:</span>
-          <span class="text-gray-600">{{ user.age }}</span>
+          <span class="font-semibold text-gray-700 w-36">NIK:</span>
+          <span class="text-gray-600">{{ user.nik }}</span>
         </p>
         <p class="flex items-center">
-          <span class="font-semibold text-gray-700 w-32">Jenis Kelamin:</span>
-          <span class="text-gray-600">{{ user.gender }}</span>
+          <span class="font-semibold text-gray-700 w-36">Tanggal Lahir:</span>
+          <span class="text-gray-600">{{ user.birthdate }}</span>
+        </p>
+        <p class="flex items-center">
+          <span class="font-semibold text-gray-700 w-36">Jenis Kelamin:</span>
+          <span class="text-gray-600">{{ displayGender(user.gender) }}</span>
+        </p>
+        <p class="flex items-center">
+          <span class="font-semibold text-gray-700 w-36">No. Telepon:</span>
+          <span class="text-gray-600">{{ user.telecom }}</span>
+        </p>
+        <p class="flex items-center">
+          <span class="font-semibold text-gray-700 w-36">Alamat:</span>
+          <span class="text-gray-600">{{ user.address }}</span>
         </p>
       </div>
       <button
@@ -52,13 +64,13 @@
     <form v-else @submit.prevent="saveProfile">
       <div class="space-y-6">
         <div>
-          <label for="fullName" class="block text-gray-700 font-semibold mb-2">Nama Lengkap</label>
+          <label for="name" class="block text-gray-700 font-semibold mb-2">Nama Lengkap</label>
           <input
-            id="fullName"
-            v-model="editedUser.fullName"
+            id="name"
+            v-model="editedUser.name"
             type="text"
             class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
-            :class="{ 'border-red-500': error && !editedUser.fullName }"
+            :class="{ 'border-red-500': error && !editedUser.name }"
           />
         </div>
         <div>
@@ -72,14 +84,23 @@
           />
         </div>
         <div>
-          <label for="age" class="block text-gray-700 font-semibold mb-2">Umur</label>
+          <label for="nik" class="block text-gray-700 font-semibold mb-2">NIK</label>
           <input
-            id="age"
-            v-model.number="editedUser.age"
-            type="number"
-            min="1"
+            id="nik"
+            v-model="editedUser.nik"
+            type="text"
             class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
-            :class="{ 'border-red-500': error && !editedUser.age }"
+            :class="{ 'border-red-500': error && !editedUser.nik }"
+          />
+        </div>
+        <div>
+          <label for="birthdate" class="block text-gray-700 font-semibold mb-2">Tanggal Lahir</label>
+          <input
+            id="birthdate"
+            v-model="editedUser.birthdate"
+            type="date"
+            class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+            :class="{ 'border-red-500': error && !editedUser.birthdate }"
           />
         </div>
         <div>
@@ -93,8 +114,28 @@
             <option value="" disabled>Pilih jenis kelamin</option>
             <option value="Laki-laki">Laki-laki</option>
             <option value="Perempuan">Perempuan</option>
-            <option value="Lainnya">Lainnya</option>
+            <!-- <option value="Lainnya">Lainnya</option> -->
           </select>
+        </div>
+        <div>
+          <label for="telecom" class="block text-gray-700 font-semibold mb-2">No. Telepon</label>
+          <input
+            id="telecom"
+            v-model="editedUser.telecom"
+            type="tel"
+            class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+            :class="{ 'border-red-500': error && !editedUser.telecom }"
+          />
+        </div>
+        <div>
+          <label for="address" class="block text-gray-700 font-semibold mb-2">Alamat</label>
+          <textarea
+            id="address"
+            v-model="editedUser.address"
+            rows="3"
+            class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+            :class="{ 'border-red-500': error && !editedUser.address }"
+          ></textarea>
         </div>
       </div>
       <p v-if="error" class="text-red-500 text-sm mt-4 font-medium">{{ error }}</p>
@@ -119,13 +160,26 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 
 const props = defineProps({
   user: {
     type: Object,
     required: true,
-    validator: (user) => ['fullName', 'email', 'age', 'gender'].every((key) => key in user),
+    default: () => ({
+      email: '',
+      name: '',
+      nik: '',
+      birthdate: '',
+      gender: '',
+      telecom: '',
+      address: ''
+    }),
+    validator: (user) => {
+      const expectedKeys = ['email', 'name', 'nik', 'birthdate', 'gender', 'telecom', 'address'];
+      if (Object.keys(user).length === 0) return true; 
+      return expectedKeys.every((key) => key in user);
+    },
   },
 })
 
@@ -134,29 +188,81 @@ const emit = defineEmits(['update:user'])
 const isEditing = ref(false)
 const error = ref('')
 const loading = ref(false)
-const editedUser = reactive({ ...props.user })
+
+const editedUser = reactive({
+  email: props.user.email || '',
+  name: props.user.name || '',
+  nik: props.user.nik || '',
+  birthdate: props.user.birthdate || '',
+  gender: props.user.gender === 'male' ? 'Laki-laki' : (props.user.gender === 'female' ? 'Perempuan' : ''),
+  telecom: props.user.telecom || '',
+  address: props.user.address || ''
+});
+
+watch(() => props.user, (newUser) => {
+  editedUser.email = newUser.email || '';
+  editedUser.name = newUser.name || '';
+  editedUser.nik = newUser.nik || '';
+  editedUser.birthdate = newUser.birthdate || '';
+  editedUser.gender = newUser.gender === 'male' ? 'Laki-laki' : (newUser.gender === 'female' ? 'Perempuan' : '');
+  editedUser.telecom = newUser.telecom || '';
+  editedUser.address = newUser.address || '';
+}, { deep: true });
+
+const displayGender = (genderValue) => {
+  if (genderValue === 'male') return 'Laki-laki';
+  if (genderValue === 'female') return 'Perempuan';
+  return genderValue;
+};
 
 const saveProfile = async () => {
   error.value = ''
   loading.value = true
 
   try {
-    if (!editedUser.fullName || !editedUser.email || !editedUser.age || !editedUser.gender) {
+    // Validation for new fields
+    if (
+      !editedUser.name ||
+      !editedUser.email ||
+      !editedUser.nik ||
+      !editedUser.birthdate ||
+      !editedUser.gender || // This is 'Laki-laki'/'Perempuan' from the form
+      !editedUser.telecom ||
+      !editedUser.address
+    ) {
       error.value = 'Semua kolom harus diisi'
+      loading.value = false;
       return
     }
-    if (editedUser.age < 1) {
-      error.value = 'Umur harus lebih dari 0'
-      return
-    }
+    // Add any other specific validations if needed (e.g., NIK format, phone format, birthdate sanity)
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    // Emit updated user data
-    emit('update:user', { ...editedUser })
+    // Map gender back to backend format before emitting
+    let genderToEmit = editedUser.gender; // Default to form value
+    if (editedUser.gender === 'Laki-laki') {
+      genderToEmit = 'male';
+    } else if (editedUser.gender === 'Perempuan') {
+      genderToEmit = 'female';
+    }
+
+    // Emit updated user data in the structure expected by the backend/parent
+    emit('update:user', {
+      email: editedUser.email,
+      // These fields are part of patient_details for the backend, 
+      // but Profile.vue will handle nesting it if needed before an API call.
+      // For now, emit a flat structure that Profile.vue can then process.
+      name: editedUser.name,
+      nik: editedUser.nik,
+      birthdate: editedUser.birthdate,
+      gender: genderToEmit, // male/female
+      telecom: editedUser.telecom,
+      address: editedUser.address,
+    })
     isEditing.value = false
   } catch (err) {
+    console.error('Error saving profile:', err);
     error.value = 'Gagal menyimpan profil. Silakan coba lagi.'
   } finally {
     loading.value = false
@@ -190,7 +296,7 @@ const saveProfile = async () => {
   .p-8 {
     padding: 1.5rem;
   }
-  .w-32 {
+  .w-36 {
     width: 100px;
   }
 }

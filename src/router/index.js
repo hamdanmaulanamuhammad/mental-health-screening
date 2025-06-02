@@ -11,7 +11,7 @@ import Support from '@/views/Support.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-  { path: '/', redirect: '/login' },
+  { path: '/', redirect: '/home' },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/home', component: Home },

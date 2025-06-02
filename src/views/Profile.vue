@@ -35,21 +35,97 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import ProfileCard from '../components/ProfileCard.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const user = ref({
-  fullName: 'John Doe',
-  email: 'john.doe@example.com',
-  age: 25,
-  gender: 'Laki-laki',
-})
+  email: '',
+  name: '',
+  nik: '',
+  birthdate: '',
+  gender: '',
+  telecom: '',
+  address: ''
+});
 
-const updateUser = (updatedUser) => {
-  user.value = updatedUser
-  // Add API call to persist changes, e.g.:
-  // await updateUserProfile(updatedUser)
+onMounted(() => {
+  const userDataString = localStorage.getItem('userData');
+  if (userDataString) {
+    const authUser = JSON.parse(userDataString);
+    user.value.email = authUser.email || '';
+    if (authUser.patient_details) {
+      user.value.name = authUser.patient_details.name || '';
+      user.value.nik = authUser.patient_details.nik || '';
+      user.value.birthdate = authUser.patient_details.birthdate || '';
+      user.value.gender = authUser.patient_details.gender || '';
+      user.value.telecom = authUser.patient_details.telecom || '';
+      user.value.address = authUser.patient_details.address || '';
+    } else {
+      console.warn('Patient details not found in user data from localStorage.');
+    }
+  } else {
+    console.warn('User data not found in localStorage. Redirecting to login.');
+    router.push('/login');
+  }
+});
+
+const updateUser = async (updatedProfileData) => {
+  console.log('Received updated profile data in Profile.vue:', updatedProfileData);
+
+  const backendPayload = {
+    email: updatedProfileData.email,
+    patient_details: {
+      name: updatedProfileData.name,
+      nik: updatedProfileData.nik,
+      birthdate: updatedProfileData.birthdate,
+      gender: updatedProfileData.gender,
+      telecom: updatedProfileData.telecom,
+      address: updatedProfileData.address
+    }
+  };
+
+  try {
+    console.log('Simulating API call to update user profile with:', backendPayload);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    user.value = { ...user.value, ...updatedProfileData };
+
+    const updatedAuthUser = {
+        email: updatedProfileData.email,
+        patient_details: {
+            name: updatedProfileData.name,
+            nik: updatedProfileData.nik,
+            birthdate: updatedProfileData.birthdate,
+            gender: updatedProfileData.gender,
+            telecom: updatedProfileData.telecom,
+            address: updatedProfileData.address
+        }
+    };
+
+    const existingUserDataString = localStorage.getItem('userData');
+    if(existingUserDataString){
+        const existingAuthUser = JSON.parse(existingUserDataString);
+        const finalUserDataToStore = {
+            ...existingAuthUser,
+            email: updatedProfileData.email,
+            patient_details: backendPayload.patient_details
+        };
+        localStorage.setItem('userData', JSON.stringify(finalUserDataToStore));
+        console.log('localStorage updated with new profile data.');
+    } else {
+        localStorage.setItem('userData', JSON.stringify(updatedAuthUser));
+    }
+
+    alert('Profil berhasil diperbarui (simulasi).');
+
+  } catch (error) {
+    console.error('Gagal memperbarui profil (simulasi):', error);
+    alert('Gagal memperbarui profil (simulasi).');
+  }
 }
 </script>
 

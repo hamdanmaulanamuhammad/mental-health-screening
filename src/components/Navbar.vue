@@ -131,22 +131,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import middlewareService from '../services/middlewareService.js'
+
+const { setAuthToken } = middlewareService;
 
 const isMenuOpen = ref(false)
-const isAuthenticated = ref(false) // Replace with actual auth state
 const router = useRouter()
+
+const isAuthenticated = computed(() => {
+  return !!localStorage.getItem('authToken');
+});
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
 
 const logout = () => {
-  // Add actual logout logic here (e.g., clear token, update auth state)
-  isAuthenticated.value = false
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userData');
+  setAuthToken(null);
+  
   isMenuOpen.value = false
-  router.push('/login')
+  router.push('/login');
 }
 </script>
 

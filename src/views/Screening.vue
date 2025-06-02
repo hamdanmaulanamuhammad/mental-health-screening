@@ -14,10 +14,19 @@
           dengan jujur untuk hasil terbaik.
         </p>
       </section>
-      <!-- Screening Form -->
-      <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <ScreeningForm />
+      
+      <!-- Loading or Error State -->
+      <section v-if="isLoading" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+          <p class="text-gray-700">Memuat data pengguna...</p>
+        </div>
       </section>
+      
+      <!-- Screening Form -->
+      <section v-else class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <ScreeningForm :userData="userData" />
+      </section>
+      
       <!-- Support CTA -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-6 animate-fade-in-down">Butuh Dukungan?</h2>
@@ -36,8 +45,45 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Navbar from '@/components/Navbar.vue'
 import ScreeningForm from '../components/ScreeningForm.vue'
+import middlewareService from '../services/middlewareService.js'
+
+const router = useRouter()
+const userData = ref(null)
+const isLoading = ref(true)
+
+onMounted(async () => {
+  const token = localStorage.getItem('authToken')
+  
+  if (!token) {
+    // No token found, redirect to login
+    router.push('/login')
+    return
+  }
+  
+  try {
+    // Fetch authenticated user data
+    const response = await middlewareService.getAuthenticatedUser(token)
+    if (response && response.data) {
+      userData.value = response.data
+      
+      // Transform user data for ScreeningForm if needed
+      console.log('User data loaded:', userData.value)
+    } else {
+      throw new Error('Failed to fetch user data')
+    }
+  } catch (error) {
+    console.error('Authentication error:', error)
+    // Clear invalid token
+    localStorage.removeItem('authToken')
+    router.push('/login')
+  } finally {
+    isLoading.value = false
+  }
+})
 </script>
 
 <style scoped>

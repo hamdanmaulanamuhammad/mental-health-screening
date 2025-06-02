@@ -118,6 +118,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import middlewareService from '../services/middlewareService.js'
+
+const { loginUser, setAuthToken, getAuthenticatedUser } = middlewareService
 
 const email = ref('')
 const password = ref('')
@@ -134,22 +137,48 @@ const handleSubmit = async () => {
   error.value = ''
   loading.value = true
 
-  try {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  if (!email.value || !password.value) {
+    error.value = 'Email dan kata sandi harus diisi'
+    loading.value = false
+    return
+  }
 
-    if (!email.value || !password.value) {
-      error.value = 'Email dan kata sandi harus diisi'
-      return
+  const credentials = {
+    email: email.value,
+    password: password.value,
+  }
+
+  try {
+    const response = await loginUser(credentials)
+    console.log('Login successful:', response.data)
+
+    const token = response.data.access_token
+
+    if (token) {
+      localStorage.setItem('authToken', token)
+      setAuthToken(token)
+      
+      try {
+        const userDetailsResponse = await getAuthenticatedUser(token);
+        if (userDetailsResponse && userDetailsResponse.data) {
+          localStorage.setItem('userData', JSON.stringify(userDetailsResponse.data));
+          console.log('User data fetched and stored:', userDetailsResponse.data);
+          router.push('/home');
+        } else {
+          throw new Error('Data pengguna tidak berhasil diambil.');
+        }
+      } catch (fetchError) {
+        console.error('Error fetching user data:', fetchError.response ? fetchError.response.data : fetchError.message);
+        error.value = 'Login berhasil, tetapi gagal mengambil data pengguna.';
+      }
+
+    } else {
+      throw new Error('Token tidak diterima dari server')
     }
 
-    // Add your actual authentication logic here
-    console.log('Login attempt with:', email.value, password.value)
-
-    // Redirect to dashboard or home page after successful login
-    router.push('/home')
   } catch (err) {
-    error.value = 'Login gagal. Periksa kembali email dan kata sandi.'
+    console.error('Login error:', err.response ? err.response.data : err.message)
+    error.value = err.response?.data?.message || 'Login gagal. Periksa kembali email dan kata sandi.'
   } finally {
     loading.value = false
   }
