@@ -33,14 +33,19 @@ export const processDass21 = (data, token) => {
   return middlewareClient.post('/api/dass21', data);
 };
 
-export const registerPatientSatusehat = (data, token) => {
+export const registerPatient = (data, token) => {
   setAuthToken(token);
   return middlewareClient.post('/api/register-patient', data);
 };
 
-export const registerPatientAndVisitSatusehat = (data, token) => {
+export const getLocations = (token) => {
   setAuthToken(token);
-  return middlewareClient.post('/api/register-patient-visit', data);
+  return middlewareClient.get('/api/locations');
+};
+
+export const createVisit = (data, token) => {
+  setAuthToken(token);
+  return middlewareClient.post('/api/create-visit', data);
 };
 
 export default {
@@ -50,6 +55,7 @@ export default {
   loginUser,
   getAuthenticatedUser,
   processDass21,
-  registerPatientSatusehat,
-  registerPatientAndVisitSatusehat
+  registerPatient,
+  getLocations,
+  createVisit
 }; 
